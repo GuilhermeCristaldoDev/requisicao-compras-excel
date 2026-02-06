@@ -1,31 +1,38 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using ExcelGenerator.Api.Services; // Ajuste para o seu namespace real
 
-// --- CORREÇÃO DO CORS ---
+var builder = WebApplication.CreateBuilder(args);
+
+// 1. CONFIGURAÇÃO DO CORS (O Coração da Solução)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("https://fazenda-amori.netlify.app") // URL do seu front SEM a barra no final
+        policy.WithOrigins("https://fazenda-amori.netlify.app")
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials();
     });
 });
-// ------------------------
 
 builder.Services.AddControllers();
-// ... resto dos services ...
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// 2. INJEÇÃO DOS SEUS SERVIÇOS (Essencial para o Controller não dar erro)
+builder.Services.AddScoped<ExcelGeneratorService>();
+builder.Services.AddScoped<PdfGeneratorService>();
 
 var app = builder.Build();
 
+// 3. PIPELINE DE EXECUÇÃO (A ordem aqui é sagrada!)
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// --- ATIVAR O CORS (TEM QUE SER ANTES DE TUDO) ---
+// O CORS tem que vir antes da Autorização e dos Controllers
 app.UseCors("AllowAll");
-// -------------------------------------------------
 
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
