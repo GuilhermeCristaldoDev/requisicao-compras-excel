@@ -1,0 +1,6 @@
+@excel_generator_faz_amori_HostAddress = http://localhost:5052
+
+GET {{excel_generator_faz_amori_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
