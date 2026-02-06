@@ -5,10 +5,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.SetIsOriginAllowed(origin => true) // Aceita qualquer origem (Netlify, Localhost, etc)
+        policy.WithOrigins("https://fazenda-amori.netlify.app") // URL do seu front SEM a barra no final
               .AllowAnyMethod()
               .AllowAnyHeader()
-              .AllowCredentials(); // Permite cookies/auth se precisar
+              .AllowCredentials();
     });
 });
 // ------------------------
