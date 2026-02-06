@@ -5,7 +5,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowNetlify", policy =>
     {
         policy
-            .AllowAnyOrigin()
+            .WithOrigins("https://fazenda-amori.netlify.app")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -17,9 +17,12 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseCors("AllowNetlify");   // ⬅️ antes de MapControllers
-app.UseAuthorization();
+app.UseCors("AllowNetlify");
 
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
