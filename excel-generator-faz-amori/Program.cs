@@ -1,12 +1,9 @@
-﻿using ExcelGenerator.Api.Services;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// 🔥 CORS: libera SOMENTE o Netlify
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("NetlifyFront", policy =>
@@ -18,7 +15,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-// 🔧 DI
 builder.Services.AddScoped<ExcelGeneratorService>();
 
 var app = builder.Build();
