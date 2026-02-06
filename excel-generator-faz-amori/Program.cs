@@ -7,7 +7,20 @@ builder.Services.AddSwaggerGen();
 // DI do seu serviço
 builder.Services.AddScoped<ExcelGenerator.Api.Services.ExcelGeneratorService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("frontend", policy =>
+    {
+        policy
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin();
+    });
+});
+
 var app = builder.Build();
+
+app.UseCors("frontend");
 
 app.UseSwagger();
 app.UseSwaggerUI();
