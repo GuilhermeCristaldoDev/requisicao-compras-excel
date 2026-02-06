@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseCors("frontend");
+app.UseCors("AllowAll");
 
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -1,4 +1,4 @@
-﻿const API_URL = "https://requisicao-compras-excel.up.railway.app/api/purchase-requests/excel";
+﻿const API_URL = "https://requisicao-compras-excel-production.up.railway.app/api/purchase-requests/excel";
 
 const itemsContainer = document.getElementById("items");
 const addItemBtn = document.getElementById("addItem");
