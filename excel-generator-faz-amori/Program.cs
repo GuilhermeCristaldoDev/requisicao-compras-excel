@@ -6,16 +6,27 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// 🔥 CORS: libera SOMENTE o Netlify
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("NetlifyFront", policy =>
+    {
+        policy
+            .WithOrigins("https://fazenda-amori.netlify.app")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+// 🔧 DI
 builder.Services.AddScoped<ExcelGeneratorService>();
-builder.Services.AddScoped<PdfGeneratorService>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseCors("NetlifyFront");
 
 app.UseStaticFiles();
 app.MapControllers();

@@ -36,7 +36,7 @@ public class ExcelGeneratorService
         var (startRow, endRow) = FillItems(ws, dto.Itens);
         InsertTotal(ws, startRow, endRow);
 
-        workbook.RecalculateAllFormulas();
+        workbook.RecalculateAllFormulas(); // força cálculo no servidor
 
         InsertLogo(ws, logoPath);
 
@@ -68,7 +68,12 @@ public class ExcelGeneratorService
             return (0, 0);
 
         var startRow = markerCell.Address.RowNumber;
+
+        // Remove o marcador
         markerCell.Value = "";
+
+        // Copia a linha base ANTES de inserir os valores
+        var templateRow = ws.Row(startRow);
 
         for (int i = 0; i < items.Count; i++)
         {
@@ -76,17 +81,18 @@ public class ExcelGeneratorService
 
             if (i > 0)
             {
-                ws.Row(startRow).InsertRowsBelow(1);
-                ws.Row(startRow).CopyTo(ws.Row(rowIndex));
+                ws.Row(rowIndex - 1).InsertRowsBelow(1);
+                templateRow.CopyTo(ws.Row(rowIndex));
             }
 
             var item = items[i];
 
-            ws.Cell(rowIndex, "C").Value = i + 1;
-            ws.Cell(rowIndex, "D").Value = item.Tipo;
-            ws.Cell(rowIndex, "E").Value = item.Quantidade;
-            ws.Cell(rowIndex, "F").Value = item.Descricao;
+            ws.Cell(rowIndex, "C").Value = i + 1;                 // Item
+            ws.Cell(rowIndex, "D").Value = item.Tipo;             // Tipo
+            ws.Cell(rowIndex, "E").Value = item.Quantidade;       // Quantidade
+            ws.Cell(rowIndex, "F").Value = item.Descricao;        // Descrição
 
+            // Valor total do item = Quantidade * Valor unitário
             ws.Cell(rowIndex, "L").FormulaA1 =
                 $"E{rowIndex}*{item.Valor.ToString(CultureInfo.InvariantCulture)}";
 

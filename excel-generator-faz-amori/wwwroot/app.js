@@ -1,4 +1,6 @@
-﻿const itemsContainer = document.getElementById("items-container");
+﻿const API_URL = "https://SUA-API-URL-AQUI/api/purchase-requests/excel";
+
+const itemsContainer = document.getElementById("items-container");
 const addItemBtn = document.getElementById("add-item-btn");
 const form = document.getElementById("purchase-form");
 
@@ -11,7 +13,7 @@ function createItemRow() {
     <input type="number" class="input qtd" placeholder="Qtd" min="1" value="1" required />
     <input type="text" class="input descricao" placeholder="Descrição" required />
     <input type="number" class="input valor" placeholder="Valor" min="0" step="0.01" required />
-    <button type="button" class="btn remove">✕</button>
+    <button type="button" class="btn remove">×</button>
   `;
 
     row.querySelector(".remove").addEventListener("click", () => {
@@ -22,14 +24,13 @@ function createItemRow() {
 }
 
 addItemBtn.addEventListener("click", () => {
-    const row = createItemRow();
-    itemsContainer.appendChild(row);
+    itemsContainer.appendChild(createItemRow());
 });
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const data = {
+    const payload = {
         numeroRequisicao: document.getElementById("numeroRequisicao").value,
         solicitante: document.getElementById("solicitante").value,
         area: document.getElementById("area").value,
@@ -43,21 +44,19 @@ form.addEventListener("submit", async (e) => {
     };
 
     document.querySelectorAll(".item-row").forEach(row => {
-        data.itens.push({
+        payload.itens.push({
             tipo: row.querySelector(".tipo").value,
-            quantidade: parseInt(row.querySelector(".qtd").value),
+            quantidade: parseInt(row.querySelector(".qtd").value, 10),
             descricao: row.querySelector(".descricao").value,
             valor: parseFloat(row.querySelector(".valor").value)
         });
     });
 
     try {
-        const response = await fetch("/api/purchase-requests/excel", {
+        const response = await fetch(API_URL, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
         });
 
         if (!response.ok) {
@@ -75,7 +74,7 @@ form.addEventListener("submit", async (e) => {
         window.URL.revokeObjectURL(url);
 
     } catch (err) {
-        alert("Erro ao gerar Excel.");
+        alert("Erro ao gerar o Excel. Verifique a API.");
         console.error(err);
     }
 });
