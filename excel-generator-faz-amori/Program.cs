@@ -4,27 +4,23 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("NetlifyFront", policy =>
-    {
-        policy
-            .WithOrigins("https://fazenda-amori.netlify.app")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
-});
-
-builder.Services.AddScoped<ExcelGeneratorService>();
+// DI do seu serviço
+builder.Services.AddScoped<ExcelGenerator.Api.Services.ExcelGeneratorService>();
 
 var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseCors("NetlifyFront");
+app.UseHttpsRedirection();
 
+// Servir front (wwwroot)
+app.UseDefaultFiles();
 app.UseStaticFiles();
+
 app.MapControllers();
+
+// Health check simples
+app.MapGet("/", () => "API Fazenda Amori rodando.");
 
 app.Run();

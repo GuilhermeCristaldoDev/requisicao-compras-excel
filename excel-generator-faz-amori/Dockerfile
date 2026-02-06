@@ -1,23 +1,25 @@
-# Etapa de build
+# ---------- BUILD ----------
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /app
+WORKDIR /src
 
-# Copia csproj e restaura
+# Copia csproj e restaura dependências
 COPY *.csproj ./
 RUN dotnet restore
 
-# Copia o resto e publica
-COPY . ./
-RUN dotnet publish -c Release -o /out
+# Copia todo o código (inclui Templates e wwwroot)
+COPY . .
+RUN dotnet publish -c Release -o /app/publish
 
-# Etapa de runtime
+# ---------- RUNTIME ----------
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
-# Porta que o Railway injeta
+# Railway injeta a porta via variável, mas garantimos 8080
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 
-COPY --from=build /out .
+# Copia build final
+COPY --from=build /app/publish .
 
+# Comando de start
 ENTRYPOINT ["dotnet", "excel-generator-faz-amori.dll"]

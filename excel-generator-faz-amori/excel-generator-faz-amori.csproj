@@ -12,9 +12,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Templates\requisicao-template.xlsx">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
+		<None Include="Templates\**\*" CopyToOutputDirectory="Always" />
+		<None Include="wwwroot\**\*" CopyToOutputDirectory="Always" />
 	</ItemGroup>
+
 
 </Project>
