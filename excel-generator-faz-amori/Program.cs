@@ -17,8 +17,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseCors("AllowNetlify"); // ⬅️ IMPORTANTE
-
+app.UseCors("AllowNetlify");   // ⬅️ antes de MapControllers
 app.UseAuthorization();
+
 app.MapControllers();
+
 app.Run();
