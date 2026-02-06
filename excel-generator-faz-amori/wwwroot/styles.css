@@ -1,0 +1,197 @@
+:root {
+    --green-900: #1f3d2b;
+    --green-700: #2f6b4f;
+    --green-500: #3fa97a;
+    --green-300: #a6d6bf;
+    --green-100: #e9f6ef;
+    --gray-900: #1f2933;
+    --gray-600: #6b7280;
+    --gray-200: #e5e7eb;
+    --radius: 14px;
+    --shadow-soft: 0 6px 20px rgba(0,0,0,0.08);
+    --shadow-strong: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(180deg, #f4faf7 0%, #ffffff 100%);
+    color: var(--gray-900);
+}
+
+/* HEADER */
+.header {
+    background: linear-gradient(135deg, var(--green-700), var(--green-900));
+    color: #fff;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    box-shadow: var(--shadow-strong);
+}
+
+    .header h1 {
+        margin: 0;
+        font-size: 1.4rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    .header p {
+        margin: 0.25rem 0 0;
+        font-size: 0.95rem;
+        opacity: 0.9;
+    }
+
+/* CONTAINER */
+.container {
+    padding: 1rem;
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+/* CARDS */
+.card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--gray-200);
+}
+
+    .card h2 {
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+        color: var(--green-900);
+        border-left: 4px solid var(--green-500);
+        padding-left: 0.5rem;
+    }
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.field label {
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.field input,
+.field select {
+    width: 100%;
+    padding: 0.65rem 0.7rem;
+    border-radius: 10px;
+    border: 1px solid var(--gray-200);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .field input:focus,
+    .field select:focus {
+        border-color: var(--green-500);
+        box-shadow: 0 0 0 2px rgba(63, 169, 122, 0.15);
+    }
+
+/* ITENS */
+#items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.item-row {
+    display: grid;
+    grid-template-columns: 1.1fr 0.6fr 1.6fr 0.8fr 40px;
+    gap: 0.4rem;
+    align-items: center;
+    background: var(--green-100);
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+    .item-row input {
+        padding: 0.45rem 0.5rem;
+        font-size: 0.8rem;
+        border-radius: 8px;
+    }
+
+/* BOTÕES */
+.btn {
+    border: none;
+    border-radius: 10px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.2s ease;
+}
+
+    .btn:active {
+        transform: scale(0.97);
+    }
+
+    .btn.primary {
+        width: 100%;
+        background: linear-gradient(135deg, var(--green-500), var(--green-700));
+        color: #fff;
+        box-shadow: var(--shadow-strong);
+    }
+
+        .btn.primary:hover {
+            filter: brightness(1.05);
+        }
+
+    .btn.secondary {
+        background: var(--green-100);
+        color: var(--green-900);
+        border: 1px dashed var(--green-300);
+    }
+
+        .btn.secondary:hover {
+            background: var(--green-300);
+        }
+
+    .btn.small {
+        margin-top: 0.6rem;
+    }
+
+    .btn.remove {
+        background: #e53935;
+        color: #fff;
+        font-size: 0.9rem;
+        padding: 0.4rem 0;
+        border-radius: 8px;
+    }
+
+/* RESPONSIVO (DESKTOP) */
+@media (min-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .header h1 {
+        font-size: 1.8rem;
+    }
+
+    .container {
+        padding: 2rem 1.5rem;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+
+    .item-row {
+        grid-template-columns: 1.2fr 0.6fr 2fr 0.8fr 44px;
+    }
+}
