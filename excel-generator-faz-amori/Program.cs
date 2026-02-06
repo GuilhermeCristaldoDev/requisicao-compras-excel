@@ -1,34 +1,29 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
 
-// 1. ADICIONAR O SERVIÇO DE CORS
-// Defina uma política com um nome específico (ex: "AllowSpecificOrigin")
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
+// --- CORREÇÃO DO CORS ---
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
-                      {
-                          policy.WithOrigins("https://fazenda-amori.netlify.app") // SEM a barra no final!
-                                .AllowAnyHeader()
-                                .AllowAnyMethod();
-                      });
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.SetIsOriginAllowed(origin => true) // Aceita qualquer origem (Netlify, Localhost, etc)
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials(); // Permite cookies/auth se precisar
+    });
 });
+// ------------------------
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// ... resto dos services ...
 
 var app = builder.Build();
-
-// --- REMOVA AQUELE SEU BLOCO 'app.Use(...)' INTEIRO DAQUI ---
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// 2. ATIVAR O MIDDLEWARE DE CORS
-// A ORDEM É CRUCIAL: Tem que ser ANTES de Authorization e MapControllers
-app.UseCors(MyAllowSpecificOrigins);
+// --- ATIVAR O CORS (TEM QUE SER ANTES DE TUDO) ---
+app.UseCors("AllowAll");
+// -------------------------------------------------
 
 app.UseAuthorization();
 app.MapControllers();
