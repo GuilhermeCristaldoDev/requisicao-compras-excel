@@ -1,10 +1,9 @@
 ﻿const API_URL = "https://requisicao-compras-excel-production.up.railway.app/api/purchase-requests/excel";
 
-const itemsContainer = document.getElementById("items");
-const addItemBtn = document.getElementById("addItem");
+const itemsContainer = document.getElementById("items-container");
+const addItemBtn = document.getElementById("add-item-btn");
 const submitBtn = document.getElementById("submit");
 
-// Cria uma linha de item
 function createItemRow() {
     const row = document.createElement("div");
     row.className = "item-row";
@@ -26,15 +25,12 @@ function createItemRow() {
 itemsContainer.appendChild(createItemRow());
 
 // Adicionar item
-addItemBtn.addEventListener("click", (e) => {
-    e.preventDefault(); // não deixa o botão submeter form
+addItemBtn.addEventListener("click", () => {
     itemsContainer.appendChild(createItemRow());
 });
 
-// Submit do formulário
-submitBtn.addEventListener("click", async (e) => {
-    e.preventDefault(); // ⬅️ ISSO EVITA O POST NO NETLIFY
-
+// Submit
+submitBtn.addEventListener("click", async () => {
     const payload = {
         numeroRequisicao: document.getElementById("numeroRequisicao").value || "",
         solicitante: document.getElementById("solicitante").value || "",
@@ -42,9 +38,9 @@ submitBtn.addEventListener("click", async (e) => {
         data: document.getElementById("data").value,
         dentroDoOrcado: document.getElementById("orcado").value === "true",
         prazoRecebimento: document.getElementById("prazo").value,
-        fornecedor1: document.getElementById("forn1").value || "",
-        fornecedor2: document.getElementById("forn2").value || "",
-        fornecedor3: document.getElementById("forn3").value || "",
+        fornecedor1: document.getElementById("fornecedor1").value || "",
+        fornecedor2: document.getElementById("fornecedor2").value || "",
+        fornecedor3: document.getElementById("fornecedor3").value || "",
         itens: []
     };
 
@@ -54,7 +50,7 @@ submitBtn.addEventListener("click", async (e) => {
         const desc = row.querySelector(".descricao").value;
         const valor = Number(row.querySelector(".valor").value);
 
-        if (!tipo && !desc) return; // ignora linhas vazias
+        if (!tipo && !desc) return;
 
         payload.itens.push({
             tipo,
@@ -89,7 +85,7 @@ submitBtn.addEventListener("click", async (e) => {
         window.URL.revokeObjectURL(url);
         a.remove();
     } catch (err) {
-        alert("Erro ao gerar Excel. Verifique o console.");
+        alert("Erro ao gerar Excel. Veja o console.");
         console.error(err);
     }
 });
